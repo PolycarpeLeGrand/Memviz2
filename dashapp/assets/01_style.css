@@ -1,0 +1,138 @@
+:root {
+    --c-primary: #af1818; /*  */
+    --c-primary-dark: #770c00;
+    --c-primary-light: #ffcccc;
+    --c-darkred-t: #770c0099;
+    --c-black: black;
+    --c-dark: #272729;
+    --c-darkgray: #27272980;
+    --c-light: #fcfcfc;
+    --c-gray: #f3f3f3;
+
+    --c-bg-page: #f1f1f1; /* #a2525238 #a25252b0 #671d1d1a #290000*/
+    --c-bg-content: var(--c-light);
+    --c-bg-content-head: rgb(227, 227, 227); /* #00000012 */
+    --c-shadow: #00000028;
+
+    --c-navhead: var(--c-primary);
+    --c-navtail: var(--c-dark);
+
+    --c-text-dark: var(--c-black);
+    --c-text-light: var(--c-light);
+
+    --media-large: 48em;
+    --sidebar-width: 16rem;
+}
+
+
+body {
+    font-family: "Helvetica", sans-serif;
+    background-color: var(--c-bg-page);
+}
+
+#page-content {
+    padding: 1rem 0.5rem;
+}
+
+.std-content-div {
+    padding: 1rem 0.5rem 0.5rem 0.5rem;
+}
+
+.title-row {
+    padding: 0 0 2rem 0;
+}
+
+.content-text {
+    font-size: 1rem;
+    text-align: justify;
+}
+
+.content-card {
+    background-color: var(--c-bg-content);
+    border: 1px solid var(--c-darkgray);
+    box-shadow: 0px 0px 1px 1px var(--c-shadow);
+    margin-bottom: 2rem;
+}
+
+.content-card-head{
+    background-color: var(--c-bg-content);
+    border-bottom: 1px solid var(--c-darkgray);
+}
+
+.card-tabs {
+    margin-top: 1.5rem;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.card-tabs .nav-link {
+    color: var(--c-text-dark);
+    text-decoration: underline;
+    padding: 0.5rem;
+    font-size: 1rem;
+    min-width: 6rem;
+    text-align: center;
+    /*border-color: #cccccc #cccccc var(--c-darkgray);*/
+    border-color: #cccccc;
+    border-bottom: 1px solid var(--c-darkgray);
+    background-color: var(--c-bg-page);
+    margin-right: 0.25rem;
+}
+
+.card-tabs .nav-link.active {
+    color: var(--c-primary);
+    border-color: var(--c-darkgray) var(--c-darkgray) transparent;
+    background-color: var(--c-bg-content);
+}
+
+.card-tabs .nav-link:hover:not(.active) {
+    border-color: var(--c-darkgray) !important;
+}
+
+.nav-link:hover {
+    cursor: pointer;
+}
+
+
+/* Styling for doc markdowns */
+
+.doc-md h1 {
+    padding-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.doc-md h2 {
+    padding: 0.5rem 0 1rem 0;
+    font-size: 1.5rem;
+}
+
+.doc-md h4 {
+    padding: 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+.doc-md pre {
+    max-height: 15rem;
+    background-color: var(--c-gray);
+}
+
+.doc-md code {
+    background-color: var(--c-gray);
+}
+
+.doc-md table {
+    background-color: var(--c-gray);
+}
+
+.doc-md thead {
+    border-bottom: 1px solid black;
+}
+
+.doc-md th {
+    min-width: 2rem;
+}
+
+.doc-md tbody tr td:first-child {
+    border-right: 1px solid black;
+    padding-right: 0.5rem;
+}

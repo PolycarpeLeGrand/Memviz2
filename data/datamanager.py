@@ -42,6 +42,19 @@ class DataManager:
     dm.TEST_DF.
 
     TODO __str__ __repr__
+
+    Args:
+        sd_list (Iterable[SavedData]): A list of SavedData objects to be loaded, usually imported from config.py.
+        save_doc_md (Optional[bool]): Whether to save the doc markdown to /DATA_DOC.md. Defaults to True.
+        load_readme (Optional[bool]): Whether to load README.md as a SavedData.
+
+    Attributes:
+        loaded_data_info (defaultdict[DType, list[SavedData]]): Dict tracking the loaded SavedData objects. Defaultdict
+            with DTypes as keys and lists of SavedData objects as values. SavedData objects hold only the metadata,
+            the data itself is added to new attributes via setattr.
+
+        DOC_MD (str): Markdown string giving an overview of all the loaded data.
+
     """
 
     def __init__(self,
@@ -49,7 +62,7 @@ class DataManager:
                  save_doc_md: Optional[bool] = True,
                  load_readme: Optional[bool] = True):
 
-        self.loaded_data_info = defaultdict(list)
+        self.loaded_data_info: defaultdict[DType, list[SavedData]] = defaultdict(list)
 
         for sd in sd_list:
             self.load_saved_data(sd)
@@ -57,11 +70,12 @@ class DataManager:
         if load_readme:
             self.load_saved_data(SavedData(name='README_MD', d_type=DType.MD, path='README.md'))
 
-        self.DOC_MD = self.make_doc_markdown()
+        self.DOC_MD: str = self.make_doc_markdown()
 
         if save_doc_md:
             with open('DATA_DOC.md', 'w') as f:
-                f.write(self.DOC_MD)
+                #f.write(self.DOC_MD)
+                pass
 
     def load_saved_data(self, sd: SavedData):
         """Loads and assigns a single SavedData object to an instance variable"""
@@ -88,7 +102,7 @@ class DataManager:
         except Exception:
             print(f'DataManager error: Could not load {sd.d_type} with name {sd.name}')
 
-    def make_doc_markdown(self, n_enum: int = 30, max_chars: int = None) -> str:
+    def make_doc_markdown(self, n_enum: int = 10, max_chars: int = None) -> str:
         doc = f'Loaded Data Doc\n=====\nTotal loaded objects: {sum(len(v) for v in self.loaded_data_info.values())}\n' + '\n'.join(f'* {k}: {len(v)}' for k, v in self.loaded_data_info.items()) + '\n\n'
 
         doc += '\nDataframes\n----\n'
@@ -101,7 +115,8 @@ Dimensions: {len(df.index)} rows X {len(df.columns)} columns.
 Memory usage: {df.memory_usage(deep=True).sum() / (1024 ** 2):.3f} mb  
 Rows (first {n_enum}): {', '.join(str(i) for i in df.index.values[:n_enum])}  
 Columns (first {n_enum}): {', '.join(str(i) for i in df.columns.values[:n_enum])}\n\n
-{df.iloc[:5, :10].to_markdown()}\n
+Shuffled sample:\n
+<div class="table-wrapper">{df.sample(10).iloc[:, :50].to_html()}</div>\n
 &nbsp
 """
 
@@ -123,7 +138,7 @@ Labels (first {n_enum}): {', '.join(str(i) for i in csv.keys()[:n_enum])}\n
 \n**{sd.name}**\n
 {sd.details}\n
 Length: {len(md)} characters / {len(md.split(' '))} words.\n\n
-```text\n{md.replace('`', '^')[:max_chars]}\n```
+```markdown\n{md.replace('`', '^')[:max_chars]}\n```
 &nbsp
 """
 
@@ -134,7 +149,7 @@ Length: {len(md)} characters / {len(md.split(' '))} words.\n\n
 \n**{sd.name}**\n
 {sd.details}\n
 Type: {type(p)}  
-Value (first {n_enum} characters or values): {str(p)[:n_enum]}\n
+Str value (first {150} characters): {str(p)[:150]}...\n
 &nbsp
 """
 

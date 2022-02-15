@@ -1,6 +1,21 @@
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc, html
 import dash_bootstrap_components as dbc
+
+
+def two_columns_content_row(title_component, left_components, right_components, left_lg=6, right_lg=6,
+                            row_classname='r2c-row', left_classname='r2c-left', right_classname='r2c-right',
+                            row_style=None, left_style=None, right_style=None):
+    return html.Div([
+        dbc.Row([
+            dbc.Col(
+                title_component
+            )
+        ]),
+        dbc.Row([
+            dbc.Col(left_components, lg=left_lg, className=left_classname, style=left_style),
+            dbc.Col(right_components, lg=right_lg, className=right_classname, style=right_style, align='end'),
+        ])
+    ], className=row_classname, style=row_style)
 
 
 def jumbotron_from_title_paragraphs(title, paragraphs, className='pt-2 pb-2'):

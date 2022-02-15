@@ -31,29 +31,19 @@ doc_card = dbc.Card([
         html.H3('Project Documentation'),
         dbc.Tabs([
             dbc.Tab(label='Readme', tab_id='tab-readme'),
-            dbc.Tab(label='Data Doc', tab_id='tab-df'),
+            dbc.Tab(label='Data Doc', tab_id='tab-doc'),
         ],
             id='doc-page-doc-card-tabs',
-            active_tab='tab-readme',
+            active_tab='tab-doc',
             className='card-tabs',
         ),
     ], className='content-card-head'),
     dbc.CardBody([
-        dcc.Markdown('readme', className='content-text doc-md', id='doc-page-doc-card-markdown')
+        dcc.Markdown('readme', className='content-text doc-md', id='doc-page-doc-card-markdown', dangerously_allow_html=True)
     ])
-],  className='content-card')
+], className='content-card')
 
-# Page layout holding the different components
-# Name should be changed to <page_name>_layout and id to <page-name> (should be done automatically if using template)
-#
-# Useful notes:
-#   Use <width> param to specify col width. True will expand, 'auto' fit to content, and 1-12 span a fixed number of
-#       grid columns.
-#   Alternatively (recommended), use <lg> to specify width on large screens and leave auto on mobile / small.
-#   Use <no_gutters=True> to remove spacing between columns
-#   Use <align> to set vertical alignment of cols within a row. Can be used on Col to set for all children or on Row to
-#       override the Col setting. Values: 'start', 'center', 'end'
-#   Use <justify> to set the horizontal alignment within a row. Values: 'start', 'center', 'end', 'between', 'around'
+
 doc_page_layout = dbc.Container([
     # Jumbotron Row, delete if not needed
     dbc.Row([
@@ -77,7 +67,7 @@ def update_doc_card_content(active_tab):
     r = 'Not found!'
     if active_tab == 'tab-readme':
         r = DM.README_MD
-    elif active_tab == 'tab-df':
+    elif active_tab == 'tab-doc':
         r = DM.DOC_MD
     return r
 

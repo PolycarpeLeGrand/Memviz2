@@ -1,0 +1,38 @@
+
+
+/* .content-text added as legacy, use .text-content*/
+.text-content, .content-text {
+    font-size: 1rem;
+    text-align: justify;
+    line-height: 1.75;
+}
+
+
+/* Classes for row-by-row two column content layout with text on the left and figures on the right */
+
+.r2c-row {
+    margin-bottom: 1rem;
+}
+
+.r2c-title {
+
+}
+
+.r2c-left {
+    height: fit-content;
+}
+
+.r2c-right {
+    height: auto;
+}
+
+.r2c-right pre {
+    background-color: var(--c-gray);
+    overflow: scroll;
+    max-height: 18rem;
+}
+
+.r2c-legend {
+    text-align: center;
+    font-size: 0.9rem;
+}

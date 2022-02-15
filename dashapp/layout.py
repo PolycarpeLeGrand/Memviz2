@@ -1,9 +1,13 @@
 from dash import dcc, html, Input, Output, State, callback
 import dash_bootstrap_components as dbc
 
-from dashapp.examples.example_home import example_home_layout
-from dashapp.examples.page_template import template_page_layout
-from dashapp.examples.doc_page import doc_page_layout
+from dashapp.home import home_layout
+from dashapp.doc_page import doc_page_layout
+
+from dashapp.theory.theory_page import theory_layout
+from dashapp.metho.metho_page import metho_layout
+from dashapp.extras.extras_page import extras_layout
+from dashapp.results.results_page import results_layout
 
 from config import NAV_TITLE, NAV_SUBTITLE, IS_PROD
 
@@ -14,16 +18,20 @@ from config import NAV_TITLE, NAV_SUBTITLE, IS_PROD
 # if use_nav is set to False, no link will be created in the nav bar but the page is still accessible via url or links
 # The page should be held in a dbc.Container component, defined in a distinct file and imported here
 PAGES = [
-    {'name': 'page-0', 'url': '/', 'label': 'Home', 'container': example_home_layout, 'in_nav': True},
-    {'name': 'page-1', 'url': '/ex', 'label': 'Example Page', 'container': template_page_layout, 'in_nav': True},
+    {'name': 'page-home', 'url': '/', 'label': 'Accueil', 'container': home_layout, 'in_nav': True},
+    #{'name': 'page-context', 'url': '/contexte', 'label': 'Contexte Théorique', 'container': theory_layout, 'in_nav': True},
+    #{'name': 'page-metho', 'url': '/metho', 'label': 'Corpus et Méthodologie', 'container': metho_layout, 'in_nav': True},
+    {'name': 'page-results', 'url': '/results', 'label': 'Résultats', 'container': results_layout, 'in_nav': True},
+    #{'name': 'page-analysis', 'url': '/analysis', 'label': 'Analyse', 'container': None, 'in_nav': True},
+    #{'name': 'page-refs', 'url': '/refs', 'label': 'Références', 'container': None, 'in_nav': True},
+    {'name': 'page-extras', 'url': '/extras', 'label': 'Données supplémentaires', 'container': extras_layout, 'in_nav': True},
 ]
 
 # Append pages that should only be available in dev config
 if not IS_PROD:
     PAGES.append(
-        {'name': 'page-100', 'url': '/doc', 'label': 'Project Doc', 'container': doc_page_layout, 'in_nav': True}
+        {'name': 'page-doc', 'url': '/doc', 'label': 'Project Doc', 'container': doc_page_layout, 'in_nav': True}
     )
-
 
 
 # Collapsable navbar component

@@ -6,9 +6,6 @@ import pandas as pd
 from dashapp import DM, cache
 
 
-
-
-
 def make_cluster_overview_table():
     # Name, num docs, top topics,
 
@@ -54,18 +51,18 @@ cluster_breakdown_div = html.Div([
                 value=sorted(DM.TOPIC_REDUCTIONS['cluster'].unique())[0],
                 id='cluster-details-select'
             )
-        ], width=4),
+        ], lg=4),
     ]),
 
     dbc.Row([
         dbc.Col([
             html.Div(id='cluster-details-source-table', style={'margin-top': '2rem'}),
-            dcc.Graph(id='cluster-details-subjects-pie'),  # style={'height': '40vh'},
-        ], width=5),
+            dcc.Graph(id='cluster-details-subjects-pie', style={'height': '30rem', 'width': '30rem'}),
+        ], lg=5),
         dbc.Col([
-            dcc.Graph(id='cluster-details-topics-graph', style={'height': '60vh'}),
-            dcc.Graph(id='cluster-details-words-graph', style={'height': '60vh'}),
-        ], width=5),
+            dcc.Graph(id='cluster-details-topics-graph', style={'height': '40rem', 'width': '48rem'}),
+            dcc.Graph(id='cluster-details-words-graph', style={'height': '40rem', 'width': '48rem'}),
+        ], lg=5),
     ]),
 ])
 
@@ -81,6 +78,10 @@ cluster_details_maindiv = html.Div([
 
         dbc.Col([
             html.P('Explication'),
+            dbc.Button('Télécharger CSV Cluster-Topics', id='cluster-details-topics-csv-btn'),
+            dcc.Download(id='cluster-details-topics-csv-dl'),
+            dbc.Button('Télécharger CSV Cluster-Categories', id='cluster-details-cats-csv-btn', style={'margin-top': '2rem'}),
+            dcc.Download(id='cluster-details-cats-csv-dl')
         ], width=3),
 
         dbc.Col([
@@ -155,3 +156,17 @@ def make_source_cluster_table(cluster, n=10):
 def update_cluster_details(cluster):
     return make_cluster_subjects_pie(cluster), make_cluster_topics_graph(cluster), make_source_cluster_table(cluster), make_cluster_words_graph(cluster)
 
+
+@callback(Output('cluster-details-topics-csv-dl', 'data'),
+          Input('cluster-details-topics-csv-btn', 'n_clicks'), prevent_initial_call=True)
+def download_cluster_topics_csv(n):
+    df = DM.DOCTOPICS_DF.groupby(DM.TOPIC_REDUCTIONS['cluster']).mean()
+    df.columns = df.columns.map(DM.TOPIC_NAMES_MAP)
+    return dcc.send_data_frame(df.to_csv, 'cluster_topics.csv')
+
+
+@callback(Output('cluster-details-cats-csv-dl', 'data'),
+          Input('cluster-details-cats-csv-btn', 'n_clicks'), prevent_initial_call=True)
+def download_cluster_topics_csv(n):
+    df = DM.SUBJECTS_CORPUSFRAME.div(DM.SUBJECTS_CORPUSFRAME.sum(axis=1), axis=0).groupby(DM.TOPIC_REDUCTIONS['cluster']).mean()
+    return dcc.send_data_frame(df.to_csv, 'cluster_categories.csv')

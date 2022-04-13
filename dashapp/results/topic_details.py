@@ -41,10 +41,10 @@ topic_details_stats = html.Div([
                 value=next(iter(DM.TOPIC_NAMES_MAP)),
                 id='topic-details-select'
             ),
-        ], width=3),
+        ], lg=3),
         dbc.Col([
 
-        ], width=9),
+        ], lg=9),
     ]),
 
     dbc.Spinner([
@@ -81,7 +81,7 @@ topic_details_maindiv = html.Div([
     dbc.Row([
         dbc.Col([
             html.H4('Topics'),
-        ], width=4),
+        ], lg=3),
     ]),
 
     dbc.Row([
@@ -95,7 +95,7 @@ topic_details_maindiv = html.Div([
 
         dbc.Col([
             make_topic_table()
-        ], width=8),
+        ], lg=9),
     ]),
 
     dbc.Row(dbc.Col(html.Hr())),

@@ -19,11 +19,11 @@ from config import NAV_TITLE, NAV_SUBTITLE, IS_PROD
 # The page should be held in a dbc.Container component, defined in a distinct file and imported here
 PAGES = [
     {'name': 'page-home', 'url': '/', 'label': 'Accueil', 'container': home_layout, 'in_nav': True},
-    #{'name': 'page-context', 'url': '/contexte', 'label': 'Contexte Théorique', 'container': theory_layout, 'in_nav': True},
-    #{'name': 'page-metho', 'url': '/metho', 'label': 'Corpus et Méthodologie', 'container': metho_layout, 'in_nav': True},
+    {'name': 'page-context', 'url': '/contexte', 'label': 'Contexte Théorique', 'container': theory_layout, 'in_nav': True},
+    {'name': 'page-metho', 'url': '/metho', 'label': 'Corpus et Méthodologie', 'container': metho_layout, 'in_nav': True},
     {'name': 'page-results', 'url': '/results', 'label': 'Résultats', 'container': results_layout, 'in_nav': True},
-    #{'name': 'page-analysis', 'url': '/analysis', 'label': 'Analyse', 'container': None, 'in_nav': True},
-    #{'name': 'page-refs', 'url': '/refs', 'label': 'Références', 'container': None, 'in_nav': True},
+    {'name': 'page-analysis', 'url': '/analysis', 'label': 'Analyse', 'container': None, 'in_nav': True},
+    {'name': 'page-refs', 'url': '/refs', 'label': 'Références', 'container': None, 'in_nav': True},
     {'name': 'page-extras', 'url': '/extras', 'label': 'Données supplémentaires', 'container': extras_layout, 'in_nav': True},
 ]
 

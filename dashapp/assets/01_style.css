@@ -190,6 +190,18 @@ body {
     padding-bottom: 5px;
 }
 
+/* dbc Table*/
+.meta-table {
+    width: fit-content;
+}
+
+.meta-table td {
+    max-width: 24rem;
+    font-size: 0.9rem;
+}
+
+
+
 /* Overrides */
 
 /* For some markdown `code` formating that is messing with backgrounds */

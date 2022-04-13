@@ -45,10 +45,12 @@ DATA = [
     SavedData('LEXCORRS_PARAS_FULL_DF', DF_PATH / 'lexcorrs_paras_full_df.p', DType.DF, 'Pearson corrs between lex cats, full corpus paragraphs.'),
     SavedData('LEMMAS_NVA_WORDS_DF', DF_PATH / 'lemmas_nva_words_1000docs_df.p', DType.DF, 'Lemmas with pos and words, with nva pos found in at least 1000 docs'),
     SavedData('WORDS_POS_LEMMAS_DF', DF_PATH / 'words_pos_lemmas_1000docs_df.p', DType.DF, 'Words with n_occs, pos and lemmas, found in at least 1000 docs'),
+    SavedData('LEX_OCCS_PARAS_DF', DF_PATH / 'lex_cat_counts_paras_df.p', DType.DF, 'Lex cat counts per para, full corpus'),
     SavedData('TOPIC_NAMES_MAP', P_PATH / 'topic_names_mapping_dict.p', d_type=DType.PICKLE, details='Topic number to topic name mapping dict'),
     SavedData('LEXICON_DICT', P_PATH / 'lexicon_dict.p', DType.PICKLE, 'word:[word] lexicon dict'),
     SavedData('COOCS_TOP_DICT', P_PATH / 'coocs_top_dict.p', DType.PICKLE, 'Dict top 100 coocs for each lexicon word, for each cluster. {cluster: {word: {\'n_occs\': n_occs, \'coocs\': [(word, coocs),...]}}}'),
-    SavedData('COOC_REFS_WORDS_LIST', P_PATH / 'cooc_refs_words_list.p', DType.PICKLE, 'List of unique words in cooc refs')
+    SavedData('COOC_REFS_WORDS_LIST', P_PATH / 'cooc_refs_words_list.p', DType.PICKLE, 'List of unique words in cooc refs'),
+    SavedData('CATEGORIES_DICT', P_PATH / 'categories_dict.p', DType.PICKLE, '{source: [categories]} dict')
 ]
 
 # Add all .md files in data/markdowns and its children to DATA as MD files, with name.upper() as names

@@ -1,9 +1,18 @@
-from dash import html, Input, Output, State, callback, MATCH, ALL, callback_context
+from dash import html, Input, Output, State, callback, MATCH, ALL, callback_context, dcc
 import dash_bootstrap_components as dbc
 import json
+import plotly.express as px
 
 # If using DataManagers, import them from dashapp on this line as well
-# from dashapp import app, cache  # , DM
+from dashapp import DM
+
+
+def make_test_graph():
+    d = DM.TOPICWORDS_DF.loc['topic_0'].nlargest(10)
+
+    fig = px.bar(d, orientation='h', title=f'Top words')
+    fig.update_layout(showlegend=False)
+    return fig
 
 
 extras_test_maindiv = html.Div([
@@ -26,7 +35,18 @@ extras_test_maindiv = html.Div([
             html.P('Allo', n_clicks=0, id='test-p', className='testp'),
             html.P('Zero', id='test-pp',)
         ])
-    ])
+    ]),
+
+    dbc.Row([dbc.Col([html.Hr(style={'margin': '2rem'})])]),
+
+    dbc.Row([
+        dbc.Col([
+            html.Div([
+                dcc.Graph(figure=make_test_graph(), id='extras-test-graph', style={'height': '32rem', 'width': '32rem'}),
+                dcc.Graph(id='extras-word-graph', style={'height': '32rem', 'width': '32rem'})
+            ], style={'display': 'inline-block'}),
+        ]),
+    ]),
 ])
 
 
@@ -50,7 +70,12 @@ def update_test_details(n_clicks):
 def testp(n):
     return n
 
-#@callback(Output({'type': 'extras-test-list-item', 'index': MATCH}, 'active'),
-#          Input({'type': 'extras-test-list-item', 'index': MATCH}, 'n_clicks'), prevent_initial_call=True)
-#def update_test_active(a):
-#    return True
+
+@callback(Output('extras-word-graph', 'figure'),
+          Input('extras-test-graph', 'clickData'))
+def make_word_graph(w):
+    w = w['points'][0]['y']
+    d = DM.TOPICWORDS_DF[w].nlargest(10)
+    fig = px.bar(d, orientation='h', title=f'Top topics for {w}')
+    fig.update_layout(showlegend=False)
+    return fig

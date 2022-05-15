@@ -8,7 +8,7 @@ from . import CLUSTER_MAP
 
 def make_cluster_overview_table():
     # Name, num docs, top topics,
-    n_topics = 3
+    n_topics = 5
     columns = [{'name': 'Cluster name', 'id': 'cluster_name'},
                {'name': 'Number of documents', 'id': 'n_docs'},
                {'name': 'Main topics', 'id': 'top_topics'},]
@@ -42,6 +42,11 @@ clusters_overview_div = html.Div([
 cluster_breakdown_div = html.Div([
 
     dbc.Row([
+
+        dbc.Col([
+            html.Div('Select a cluster to show details', className='cshps-subtitle', style={'margin': 'auto'}),
+        ], width='auto', align='center'),
+
         dbc.Col([
             dbc.Select(
                 options=[
@@ -52,18 +57,22 @@ cluster_breakdown_div = html.Div([
                 id='cluster-details-select'
             )
         ], lg=4),
-    ]),
+    ], justify='start'),
+
+    dbc.Row([
+        dbc.Col([
+            html.Div(dcc.Graph(id='cluster-details-topics-graph', style={'height': '40rem', 'width': '40rem'}), className='graph-container'),
+        ], lg='auto'),
+        dbc.Col([
+            html.Div(dcc.Graph(id='cluster-details-words-graph', style={'height': '40rem', 'width': '36rem'}), className='graph-container'),
+        ], lg='auto'),
+    ], style={'margin-top': '1rem'}),
 
     dbc.Row([
         dbc.Col([
             html.Div(id='cluster-details-source-table', style={'margin-top': '2rem'}),
-            dcc.Graph(id='cluster-details-subjects-pie', style={'height': '30rem', 'width': '30rem'}),
-        ], lg=5),
-        dbc.Col([
-            dcc.Graph(id='cluster-details-topics-graph', style={'height': '40rem', 'width': '48rem'}),
-            dcc.Graph(id='cluster-details-words-graph', style={'height': '40rem', 'width': '48rem'}),
-        ], lg=5),
-    ]),
+        ], lg='auto'),
+    ])
 ])
 
 cshps_cluster_details_maindiv = dbc.Card([
@@ -87,23 +96,28 @@ cshps_cluster_details_maindiv = dbc.Card([
     ]),
 
     dbc.Row([
-
         dbc.Col([
-            html.P('Explication'),
+            html.Hr(className='cshps-hr-full'),
+        ])
+    ]),
+
+    dbc.Row([
+        #dbc.Col([
+        #    html.P('Explication'),
             #dbc.Button('Télécharger CSV Cluster-Topics', id='cluster-details-topics-csv-btn'),
             #dcc.Download(id='cluster-details-topics-csv-dl'),
             #dbc.Button('Télécharger CSV Cluster-Categories', id='cluster-details-cats-csv-btn', style={'margin-top': '2rem'}),
             #dcc.Download(id='cluster-details-cats-csv-dl')
-        ], width=3),
+        #], width=3),
 
         dbc.Col([
             clusters_overview_div,
-        ], width=9),
+        ], width=12),
     ]),
 
     dbc.Row([
         dbc.Col([
-            html.Hr()
+            html.Hr(className='cshps-hr-full')
         ]),
     ]),
 
@@ -120,16 +134,16 @@ def make_cluster_topics_graph(cluster='cluster_0', n_topics=20):
 
     s = DM.DOCTOPICS_DF.loc[DM.TOPIC_REDUCTIONS['cluster']==cluster].mean().nlargest(n_topics).sort_values(ascending=True)
     s.index = s.index.map(DM.TOPIC_NAMES_MAP)
-    fig = px.bar(s, orientation='h', title=f'Poids moyens des topics ({n_topics} plus importants)')
-    fig.update_layout(showlegend=False)
+    fig = px.bar(s, orientation='h', title=f'Average topic weights within cluster ({n_topics} highest)')
+    fig.update_layout(showlegend=False, margin_t=60, xaxis_title='Weights', yaxis_title='Topics')
     return fig
 
 
 def make_cluster_words_graph(cluster='cluster_0', n_words=20):
     dt = DM.DOCTOPICS_DF.loc[DM.TOPIC_REDUCTIONS['cluster']==cluster].mean()
     s = DM.TOPICWORDS_DF.multiply(dt, axis='index').sum().nlargest(n_words).sort_values(ascending=True)
-    fig = px.bar(s, orientation='h', title=f'Poids proportionnels moyens des mots ({n_words} plus importants)')
-    fig.update_layout(showlegend=False)
+    fig = px.bar(s, orientation='h', title=f'Proportional average word weights ({n_words} highest)')
+    fig.update_layout(showlegend=False, margin_t=60, xaxis_title='Weights', yaxis_title='Words')
 
     return fig
 
@@ -155,15 +169,34 @@ def make_source_cluster_table(cluster, n=10):
 
     data = [{'source': s.capitalize(), 'n_docs': n} for s, n in s.iteritems()]
 
-    return dash_table.DataTable(columns=columns, data=data)
+    head = [html.Thead([
+        html.Tr([
+            html.Th('Most frequent journals in cluster', colSpan=2,
+                    className='cshps-small-table-data')
+        ]),
+        html.Tr([
+            html.Th('Journal', className='cshps-small-table-data'),
+            html.Th('Articles', className='cshps-small-table-data')
+        ])
+    ], className='content-text-small')
+    ]
+
+    body = [html.Tbody([
+        html.Tr([
+            html.Td(s, className='cshps-small-table-data'),
+            html.Td(n, className='cshps-small-table-data'),
+        ]) for s, n in s.iteritems()
+    ])]
+
+    table = dbc.Table(head + body, bordered=True, striped=True, hover=True)
+    return table #dash_table.DataTable(columns=columns, data=data)
 
 
 @callback(
-    [Output('cluster-details-subjects-pie', 'figure'),
-     Output('cluster-details-topics-graph', 'figure'),
+    [Output('cluster-details-topics-graph', 'figure'),
      Output('cluster-details-source-table', 'children'),
      Output('cluster-details-words-graph', 'figure')],
     [Input('cluster-details-select', 'value')]
 )
 def update_cluster_details(cluster):
-    return make_cluster_subjects_pie(cluster), make_cluster_topics_graph(cluster), make_source_cluster_table(cluster), make_cluster_words_graph(cluster)
+    return make_cluster_topics_graph(cluster), make_source_cluster_table(cluster), make_cluster_words_graph(cluster)

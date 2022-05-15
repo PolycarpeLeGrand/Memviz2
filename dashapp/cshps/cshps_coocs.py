@@ -4,44 +4,56 @@ import dash_bootstrap_components as dbc
 from dashapp import DM, cache
 from . import CLUSTER_MAP
 
-select_div = html.Div([
-    html.Span('Choisir le mot:'),
-    dbc.Select(
-        options=[
-            {'label': w, 'value': w} for w in sorted(DM.COOCS_TOP_DICT['full_corpus'])
-        ],
-        value='mechanism',
-        id='coocs-word-select',
-        style={'max-width': '20rem'}
-    ),
-])
 
 coocs_div = html.Div(id='coocs-top-content')
 
 cshps_coocs_maindiv = dbc.Card([
     dbc.Row([
         dbc.Col([
-            html.H4('Cooccurrences'),
+            html.Div('Cooccurrences', className='cshps-title'),
         ]),
     ]),
 
     dbc.Row([
         dbc.Col([
-            select_div,
+            # Explanatory text
+            dcc.Markdown(
+                'Cooccurrences. Explanation text' +
+                '\n\n' +
+                'Text',
+                className='cshps-md'
+            ),
+        ], lg=6),
+    ]),
+
+    dbc.Row([
+        dbc.Col([
+            html.Hr(className='cshps-hr-full'),
         ]),
     ]),
 
     dbc.Row([
         dbc.Col([
-            html.Hr(),
-        ]),
-    ]),
+            html.Div('Select a word to show cooccurrence details', className='cshps-subtitle', style={'margin': 'auto'}),
+        ], width='auto', align='center'),
+        dbc.Col([
+            dbc.Select(
+                options=[
+                    {'label': w, 'value': w} for w in sorted(DM.COOCS_TOP_DICT['full_corpus'])
+                ],
+                value='mechanism',
+                id='coocs-word-select',
+                #style={'max-width': '20rem'}
+            ),
+        ], width='auto'),
+
+    ], justify='start'),
 
     dbc.Row([
         dbc.Col([
             coocs_div
         ]),
-    ]),
+    ], style={'margin-top': '1rem'}),
 
 ], body=True, className='content-card')
 

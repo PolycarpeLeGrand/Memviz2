@@ -95,7 +95,7 @@ cshps_topics_scatter_maindiv = dbc.Card([
 
     dbc.Row([
         dbc.Col([
-            html.Hr(style={'width': '50%'}),
+            html.Hr(className='cshps-hr-full'),
         ])
     ]),
 

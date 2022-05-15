@@ -8,3 +8,11 @@ CLUSTER_MAP = {
     'cluster_5': 'Cancer research',
     'cluster_6': 'Genetics, disease, biology, others',
 }
+
+# TODO
+
+# Change home page
+# Change title
+# Add metadata
+# Finish pages (graphs and text)
+# Redis

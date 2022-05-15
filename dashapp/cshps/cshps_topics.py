@@ -35,56 +35,46 @@ def make_topic_table(n_words=5):
 topic_details_stats = html.Div([
     dbc.Row([
         dbc.Col([
+            html.Div('Select a topic to show details', className='cshps-subtitle', style={'margin': 'auto'}),
+        ], width='auto', align='center'),
+
+        dbc.Col([
             dbc.Select(
-                options=[{'label': t.replace('_', ' ').capitalize() + ' - ' + n, 'value': t}
+                options=[{'label': n, 'value': t}
                          for t, n in DM.TOPIC_NAMES_MAP.items()],
                 value=next(iter(DM.TOPIC_NAMES_MAP)),
                 id='topic-details-select'
             ),
-        ], lg=3),
-        dbc.Col([
-
-        ], lg=9),
-    ]),
-
-    dbc.Spinner([
-        dbc.Row([
-
-        dbc.Col([
-            html.Div(id='topic-details-avg-weight'),
-            html.Div(id='topic-details-n-main'),
-            html.P('wordcloud?')
-        ]),
-        dbc.Col([
-            html.Div(id='topic-details-top-words')
-        ]),
-        dbc.Col([
-            html.Div(id='topic-details-top-sources-avg')
-        ]),
-        dbc.Col([
-            html.Div(id='topic-details-top-sources-n-main')
-        ]),
-    ]),
+        ], lg=2),
+    ], justify='start'),
 
     dbc.Row([
+        dbc.Col([
+            html.Div(id='topic-details-text'),
+        ]),
+    ], style={'margin-top': '1rem'}),
+
+
+    dbc.Row([
+
+
+
         dbc.Col([
             html.Div([
                 dbc.Spinner(dcc.Graph(id='cshps-topics-words-graph', style={'width': '520px', 'height': '600px'}))
             ], className='graph-container'),
-        ]),
+        ], lg='auto'),
         dbc.Col([
             html.Div([
                 dbc.Spinner(dcc.Graph(id='cshps-topics-sources-graph', style={'width': '700px', 'height': '600px'}))
             ], className='graph-container'),
-        ]),
+        ], lg='auto'),
     ]),
 
     dbc.Row([
         dbc.Col([
-            html.P('Références aux 10 articles les plus fortement associés à ce topic'),
             html.Div(id='topic-details-top-citations'),
         ])
-    ])
     ])
 
 ])
@@ -101,36 +91,40 @@ cshps_topic_details_maindiv = dbc.Card([
         dbc.Col([
             # Explanatory text
             dcc.Markdown(
-                'Topic details. Overview on top, or select one below' +
+                '' +
                 '\n\n' +
-                'blablalba',
+                'Individual topics can be explored in more detail' +
+                'The topic modeling was done on the documents\' abstracts using SkLearn\'s LDA implementation. ' +
+                '',
                 className='cshps-md'
             ),
         ], lg=6),
     ]),
 
     dbc.Row([
-
         dbc.Col([
-            dcc.Markdown(
-                'LDA topic model computed on abstracts using sklearn  \n' +
-                f'Number of topics: {len(DM.TOPIC_NAMES_MAP)}  \n' +
-                f'Average tokens: {int(DM.METADATA_CORPUSFRAME["abs_tokens"].mean())}  \n' +
-                f'Vocabulary size: {len(DM.TOPICWORDS_DF.columns)} lemmas  \n',
-                className='cshps-md'
-            ),
-            #html.P('Topic modeling réalisé sur les abstracts des textes'),
-            #html.P(f'Nombre de tokens moyen: {int(DM.METADATA_CORPUSFRAME["abs_tokens"].mean())}'),
-            #html.P(f'Taille totale du vocabulaire retenu: {len(DM.TOPICWORDS_DF.columns)} lemmes'),
-            #html.P(f'Nombre de topics: {len(DM.TOPIC_NAMES_MAP)}'),
-        ]),
+            html.Hr(className='cshps-hr-full'),
+        ])
+    ]),
+
+    dbc.Row([
+
+        #dbc.Col([
+        #    dcc.Markdown(
+        #        'LDA topic model computed on abstracts using sklearn  \n' +
+        #        f'Number of topics: {len(DM.TOPIC_NAMES_MAP)}  \n' +
+        #        f'Average tokens: {int(DM.METADATA_CORPUSFRAME["abs_tokens"].mean())}  \n' +
+        #        f'Vocabulary size: {len(DM.TOPICWORDS_DF.columns)} lemmas  \n',
+        #        className='cshps-md'
+        #    ),
+        #]),
 
         dbc.Col([
             make_topic_table()
-        ], lg=9),
+        ], lg=12),
     ]),
 
-    dbc.Row(dbc.Col(html.Hr())),
+    dbc.Row(dbc.Col(html.Hr(className='cshps-hr-full'))),
 
     dbc.Row([
         dbc.Col([
@@ -162,11 +156,7 @@ def make_topic_sources_graph(topic, n_sources=20):
     return fig
 
 
-@callback([Output('topic-details-avg-weight', 'children'),
-           Output('topic-details-n-main', 'children'),
-           Output('topic-details-top-words', 'children'),
-           Output('topic-details-top-sources-avg', 'children'),
-           Output('topic-details-top-sources-n-main', 'children'),
+@callback([Output('topic-details-text', 'children'),
            Output('topic-details-top-citations', 'children'),
            Output('cshps-topics-words-graph', 'figure'),
            Output('cshps-topics-sources-graph', 'figure')],
@@ -186,33 +176,42 @@ def update_topic_details(topic):
 
     if n_main != 0:
         main_rank = int(DM.TOPIC_REDUCTIONS['main_topic'].value_counts().rank(ascending=False, method='min')[topic])
-        srs_main = df[df['main_topic'] == topic]['source'].value_counts().nlargest(10)
     else:
         main_rank = 'N/A'
-        srs_main = pd.Series(['N/A'], index=['N/A'])
 
-
-    words_table = dash_table.DataTable(columns=[{'name': ['Mots les plus importants', 'Mot'], 'id': 'word'}, {'name': ['Mots les plus importants', 'Poids'], 'id': 'weight'}],
-                                       data=[{'word': word, 'weight': f'{weight:.4f}'} for word, weight in top_words.iteritems()],
-                                       merge_duplicate_headers=True,)
-
-    srs_means_table = dash_table.DataTable(columns=[{'name': ['Revues par poids moyen', 'Revue'], 'id': 'source'}, {'name': ['Revues par poids moyen', 'Poids moyen'], 'id': 'avg'}],
-                                          data=[{'source': source.capitalize(), 'avg': f'{avg:.4f}'} for source, avg in srs_mean.iteritems()],
-                                          merge_duplicate_headers=True)
-
-    srs_main_table = dash_table.DataTable(columns=[{'name': ['Topic principal par revues', 'Revue'], 'id': 'source'}, {'name': ['Revues avec topic comme principal', 'Nombre'], 'id': 'n'}],
-                                          data=[{'source': source.capitalize(), 'n': n} for source, n in srs_main.iteritems()],
-                                          merge_duplicate_headers=True)
 
     citations_table = dash_table.DataTable(columns=[{'name': 'Identifiant', 'id': 'id'}, {'name': 'Poids', 'id': 'weight'}, {'name': 'Citation', 'id': 'citation'}],
                                            data=[{'id': doc, 'weight': f'{w:.4f}', 'citation': DM.METADATA_CORPUSFRAME.loc[doc, 'citation']} for doc, w in DM.DOCTOPICS_DF[topic].nlargest(10).iteritems()],
                                            style_data={'whiteSpace': 'normal', 'height': 'auto'},)
 
-    return html.P(f'Poids moyen à travers le corpus: {average_weight:.4f} ({rank}/80 plus important)'), \
-           html.P(f'Topic principal de {n_main} documents ( {n_main/len(DM.METADATA_CORPUSFRAME)*100:.2f}% du corpus, {main_rank}/80 plus impoirtant)'), \
-           words_table, \
-           srs_means_table, \
-           srs_main_table, \
+    head = [html.Thead([
+        html.Tr([
+            html.Th('Articles most closely associated with this topic (10 highest)', colSpan=2, className='cshps-small-table-data')
+        ]),
+        html.Tr([
+            html.Th('Weight', className='cshps-small-table-data'),
+            html.Th('Article Reference', className='cshps-small-table-data')
+        ])
+        ], className='content-text-small')
+    ]
+
+    body = [html.Tbody([
+        html.Tr([
+            html.Td(f'{w:.4f}', className='cshps-small-table-data'),
+            html.Td(dcc.Markdown(DM.METADATA_CORPUSFRAME.loc[doc, 'citation']), className='cshps-small-table-data'),
+        ]) for doc, w in DM.DOCTOPICS_DF[topic].nlargest(10).iteritems()
+    ])]
+
+    citations_table = dbc.Table(head+body, bordered=True, striped=True, hover=True)
+
+    details_md = dcc.Markdown(
+        f'Average topic weight acrodd corpus: {average_weight:.4f} ({rank}/80 highest)' +
+        '  \n' +
+        f'Main topic of {n_main} documents ({n_main/len(DM.METADATA_CORPUSFRAME)*100:.2f}% of documents, {main_rank}/80 highest)',
+        className='cshps-md'
+    )
+
+    return details_md, \
            citations_table, \
            make_topic_words_graph(topic), \
            make_topic_sources_graph(topic)

@@ -13,7 +13,7 @@
 }
 
 
-.cshps-md {
+.cshps-md, .cshps-text {
     font-size: 0.9rem;
 }
 
@@ -25,4 +25,17 @@
 .cshps-small-table-data {
     font-size: 0.9rem;
     padding: 0.25rem !important;
+}
+
+.cshps-small-table-data P {
+    margin: 0;
+}
+
+.cshps-hr-full{
+    margin: 2rem 0;
+}
+
+.cshps-hr-half{
+    margin: 1.5rem auto;
+    width: 50%;
 }

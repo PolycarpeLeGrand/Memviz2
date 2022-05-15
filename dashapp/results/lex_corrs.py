@@ -2,6 +2,7 @@ from dash import dcc, html, Input, Output, State, callback, dash_table
 import dash_bootstrap_components as dbc
 import plotly.express as px
 import pandas as pd
+from sklearn.manifold import TSNE
 
 from dashapp import DM, cache
 
@@ -27,7 +28,7 @@ options_div = html.Div([
         options=[{'label': 'Corpus complet', 'value': 'full'}] + [
             {'label': c.capitalize().replace('_', ' '), 'value': c} for c in sorted(DM.TOPIC_REDUCTIONS['cluster'].unique())
         ],
-        value='full',
+        value='cluster_0', # 'full'
         id='lexcorrs-cluster-select',
         style={'max-width': '12rem'}
     ),
@@ -56,10 +57,22 @@ lex_corrs_maindiv = html.Div([
             dcc.Download(id='lexcorrs-freqs-csv-dl'),
         ]),
     ], style={'margin-top': '2rem', 'margin-bottom': '2rem'}),
+
+    dbc.Row([
+        dbc.Col([
+            dbc.Select(
+                options=[{'label': w, 'value': w} for w in DM.LEX_OCCS_PARAS_DF.columns],
+                value='mechanism',
+                id='lexcorrs-comparison-select'
+            ),
+            html.Div(id='lexcorrs-comparison-table-div')
+        ])
+    ]),
+
     dbc.Row([
         dbc.Col([
             dbc.Spinner(
-                dcc.Graph(id='lexcorrs-heatmap', style={'height': '90vw', 'width': '100%'})
+                dcc.Graph(id='lexcorrs-heatmap', style={'height': '900px', 'width': '100%'})
             ),  # 1350x1300, scroll
         ]),
     ]),
@@ -75,7 +88,7 @@ def toggle_modal(n, is_open):
     return is_open
 
 
-def make_lexoccs_df(cluster):
+def make_lexoccs_df(cluster: str) -> pd.DataFrame:
 
     if cluster != 'full':
         doc_ids = DM.TOPIC_REDUCTIONS.loc[DM.TOPIC_REDUCTIONS['cluster']==cluster].index
@@ -86,7 +99,7 @@ def make_lexoccs_df(cluster):
     return df
 
 
-def make_corrs_df(cluster, norm_diag=True):
+def make_corrs_df(cluster: str, norm_diag: bool = True) -> pd.DataFrame:
 
     df = make_lexoccs_df(cluster)
     df = df.corr()
@@ -97,7 +110,7 @@ def make_corrs_df(cluster, norm_diag=True):
     return df
 
 
-def make_cprobs_df(cluster, max_value=10):
+def make_cprobs_df(cluster: str, max_value: int = 10) -> pd.DataFrame:
 
     df = make_lexoccs_df(cluster)
     df = (df >= 1)
@@ -108,7 +121,7 @@ def make_cprobs_df(cluster, max_value=10):
         index=sums.index
     )
 
-    if max_value:
+    if max_value > 0:
         pf = pf.applymap(lambda x: max_value if x > max_value else x)
 
     return pf
@@ -124,13 +137,53 @@ def make_lexcorr_heatmap(df):
     return fig
 
 
+def make_lex_scatter(df):
+    df[['tsne_x', 'tsne_y']] = TSNE(n_components=2, random_state=2112).fit_transform(df)
+    #df[['tsne_x', 'tsne_y', 'tsne_z']] = TSNE(n_components=3, random_state=2112).fit_transform(df)
+    df['lex'] = df.index
+    print(df)
+    fig = px.scatter(df, x='tsne_x', y='tsne_y', color='lex', text='lex')
+    #fig = px.scatter_3d(df, x='tsne_x', y='tsne_y', z='tsne_z', color='lex', text='lex')
+    return fig
+
+
+
+#print('This gonna be long...')
+#corr_df = make_corrs_df('full', norm_diag=True)
+#print('half done...')
+#prob_df = make_cprobs_df('full', max_value=-1)
+#print('done!')
+
 @callback(Output('lexcorrs-heatmap', 'figure'),
           [Input('lexcorrs-cluster-select', 'value')])
 def update_lex_heatmap(cluster):
-
-    df = make_cprobs_df(cluster)
+    #df = corr_df
+    df = make_corrs_df(cluster, norm_diag=True)
+    #df = make_cprobs_df(cluster)
+    #return make_lex_scatter(df)
     return make_lexcorr_heatmap(df)
 
+"""
+@callback(Output('lexcorrs-comparison-table-div', 'children'),
+          [Input('lexcorrs-comparison-select', 'value')])
+def update_top_comp(lex):
+    rows = 20
+    corr = corr_df[lex].nlargest(rows).index
+    prob = prob_df[lex].nlargest(rows).index
+    # print(corr.nlargest(20))
+    # print(prob.nlargest(20))
+
+    head = [html.Thead([html.Tr([html.Th('Rank'), html.Th('Corr'), html.Th('Prob')])])]
+    body = [html.Tbody(
+        [
+        html.Tr([html.Td(i+1), html.Td(corr[i]), html.Td(prob[i])]) for i in range(rows)
+        ]
+    )]
+
+    table = dbc.Table(head+body, bordered=True, striped=True, )
+
+    return table
+"""
 
 @callback(Output('lexcorrs-corrs-csv-dl', 'data'),
           [Input('lexcorrs-corrs-dl-btn', 'n_clicks')],

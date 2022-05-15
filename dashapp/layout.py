@@ -4,10 +4,16 @@ import dash_bootstrap_components as dbc
 from dashapp.home import home_layout
 from dashapp.doc_page import doc_page_layout
 
-from dashapp.theory.theory_page import theory_layout
-from dashapp.metho.metho_page import metho_layout
-from dashapp.extras.extras_page import extras_layout
-from dashapp.results.results_page import results_layout
+#from dashapp.theory.theory_page import theory_layout
+#from dashapp.metho.metho_page import metho_layout
+#from dashapp.extras.extras_page import extras_layout
+#from dashapp.results.results_page import results_layout
+
+from dashapp.cshps.cshps_scatter import cshps_topics_scatter_maindiv
+from dashapp.cshps.cshps_topics import cshps_topic_details_maindiv
+from dashapp.cshps.cshps_clusters import cshps_cluster_details_maindiv
+from dashapp.cshps.cshps_coocs import cshps_coocs_maindiv
+from dashapp.cshps.cshps_refs import cshps_cooc_refs_maindiv
 
 from config import NAV_TITLE, NAV_SUBTITLE, IS_PROD
 
@@ -17,14 +23,23 @@ from config import NAV_TITLE, NAV_SUBTITLE, IS_PROD
 # IMPORTANT: name and url fields must be unique across all values
 # if use_nav is set to False, no link will be created in the nav bar but the page is still accessible via url or links
 # The page should be held in a dbc.Container component, defined in a distinct file and imported here
+#PAGES = [
+#    {'name': 'page-home', 'url': '/', 'label': 'Accueil', 'container': home_layout, 'in_nav': True},
+#    {'name': 'page-context', 'url': '/contexte', 'label': 'Contexte Théorique', 'container': theory_layout, 'in_nav': True},
+#    {'name': 'page-metho', 'url': '/metho', 'label': 'Corpus et Méthodologie', 'container': metho_layout, 'in_nav': True},
+#    {'name': 'page-results', 'url': '/results', 'label': 'Résultats', 'container': results_layout, 'in_nav': True},
+#    {'name': 'page-analysis', 'url': '/analysis', 'label': 'Analyse', 'container': None, 'in_nav': True},
+#    {'name': 'page-refs', 'url': '/refs', 'label': 'Références', 'container': None, 'in_nav': True},
+#    {'name': 'page-extras', 'url': '/extras', 'label': 'Données supplémentaires', 'container': extras_layout, 'in_nav': True},
+#]
+
 PAGES = [
-    {'name': 'page-home', 'url': '/', 'label': 'Accueil', 'container': home_layout, 'in_nav': True},
-    {'name': 'page-context', 'url': '/contexte', 'label': 'Contexte Théorique', 'container': theory_layout, 'in_nav': True},
-    {'name': 'page-metho', 'url': '/metho', 'label': 'Corpus et Méthodologie', 'container': metho_layout, 'in_nav': True},
-    {'name': 'page-results', 'url': '/results', 'label': 'Résultats', 'container': results_layout, 'in_nav': True},
-    {'name': 'page-analysis', 'url': '/analysis', 'label': 'Analyse', 'container': None, 'in_nav': True},
-    {'name': 'page-refs', 'url': '/refs', 'label': 'Références', 'container': None, 'in_nav': True},
-    {'name': 'page-extras', 'url': '/extras', 'label': 'Données supplémentaires', 'container': extras_layout, 'in_nav': True},
+    #{'name': 'page-results', 'url': '/results', 'label': 'Résultats', 'container': results_layout, 'in_nav': True},
+    {'name': 'cshps-scatter', 'url': '/scatter', 'label': 'Topics and Clusters', 'container': cshps_topics_scatter_maindiv, 'in_nav': True},
+    {'name': 'cshps-topics', 'url': '/topics', 'label': 'Topic Details', 'container': cshps_topic_details_maindiv, 'in_nav': True},
+    {'name': 'cshps-clusters', 'url': '/clusters', 'label': 'Cluster Details', 'container': cshps_cluster_details_maindiv, 'in_nav': True},
+    {'name': 'cshps-coocs', 'url': '/coocs', 'label': 'Cooccurrences', 'container': cshps_coocs_maindiv, 'in_nav': True},
+    {'name': 'cshps-refs', 'url': '/refs', 'label': 'Cooccurrence Samples', 'container': cshps_cooc_refs_maindiv, 'in_nav': True},
 ]
 
 # Append pages that should only be available in dev config

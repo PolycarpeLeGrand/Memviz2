@@ -42,6 +42,10 @@ body {
     font-size: 0.9rem;
 }
 
+.content-text-tiny {
+    font-size: 0.75rem;
+}
+
 #page-content {
     padding: 1rem 0.5rem;
 }

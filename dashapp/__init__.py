@@ -5,6 +5,8 @@ import plotly.graph_objects as go
 
 from config import PROJECT_TITLE, IS_PROD, USE_CACHE, CACHE_CONFIG, DATA
 from data.datamanager import DataManager
+import dash_auth
+
 
 app = dash.Dash(
     __name__,
@@ -13,6 +15,12 @@ app = dash.Dash(
     meta_tags=[
         {"name": "viewport", "content": "width=device-width, initial-scale=1"}
     ],
+)
+
+PWS = {'cshps': '2022'}
+auth = dash_auth.BasicAuth(
+    app,
+    PWS
 )
 
 if USE_CACHE:
@@ -37,7 +45,7 @@ pio.templates['custom_template'] = go.layout.Template(
         # Graph area background
         # 'plot_bgcolor': '#98AFBA',
         # Discrete colors for 'color' axis
-        'colorway': ['#188caf', '#AF4979', '#F39530', '#A171A0', '#00836B', '#FFEACE', '#5ED99C'],
+        'colorway': ['#188caf', '#AF4979', '#F39530', '#A171A0', '#00836B', '#FFEACE', '#5ED99C'], ##FFEACE
         # Font property is a dict, family, size, color, etc.
         'font': {'family': 'Sans-serif, Helvetica', 'color': '#212529'}
     }

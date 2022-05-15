@@ -1,0 +1,28 @@
+.cshps-title {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height:1.2;
+}
+
+.cshps-subtitle {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 450;
+    line-height:1.2;
+}
+
+
+.cshps-md {
+    font-size: 0.9rem;
+}
+
+.cshps-md P {
+    margin-bottom: 0.5rem;
+
+}
+
+.cshps-small-table-data {
+    font-size: 0.9rem;
+    padding: 0.25rem !important;
+}

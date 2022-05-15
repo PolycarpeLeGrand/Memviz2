@@ -1,0 +1,14 @@
+.graph-container {
+    overflow: auto;
+}
+
+.graph-large {
+    min-width: 600px;
+    height: 85vh;
+    max-height: 75vw;
+}
+
+.graph-md-side-bar {
+    height: 750px;
+    width: 600px;
+}

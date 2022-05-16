@@ -119,6 +119,7 @@ cshps_topics_scatter_maindiv = dbc.Card([
 @callback(Output('topics-scatter-graph', 'figure'),
           [Input('topics-scatter-dims-radio', 'value'),
            Input('topics-scatter-ndocs-radio', 'value'),])
+@cache.memoize()
 def update_topic_scatter(n_dims: int, n_docs: int):
 
     color_col = 'cluster'

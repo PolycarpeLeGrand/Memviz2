@@ -104,6 +104,7 @@ def make_cluster_col(cluster, word):
 
 @callback([Output('coocs-top-content', 'children'),],
           [Input('coocs-word-select', 'value')],)
+@cache.memoize()
 def update_coocs_content(word):
     return [make_cluster_tab(word)]
         #[dbc.Row(

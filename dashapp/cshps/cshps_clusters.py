@@ -201,5 +201,6 @@ def make_source_cluster_table(cluster, n=10):
      Output('cluster-details-words-graph', 'figure')],
     [Input('cluster-details-select', 'value')]
 )
+@cache.memoize()
 def update_cluster_details(cluster):
     return make_cluster_topics_graph(cluster), make_source_cluster_table(cluster), make_cluster_words_graph(cluster)

@@ -123,6 +123,7 @@ def make_ref_section(d):
 @callback(Output('cooc-refs-content-div', 'children'),
           [Input('cooc-refs-select-0', 'value'),
            Input('cooc-refs-select-1', 'value')],)
+@cache.memoize()
 def update_cooc_refs(w0, w1):
 
     w0, w1 = sorted([w0, w1])

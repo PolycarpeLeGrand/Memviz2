@@ -163,6 +163,7 @@ def make_topic_sources_graph(topic, n_sources=20):
            Output('cshps-topics-words-graph', 'figure'),
            Output('cshps-topics-sources-graph', 'figure')],
           [Input('topic-details-select', 'value')])
+@cache.memoize()
 def update_topic_details(topic):
     top_words = DM.TOPICWORDS_DF.loc[topic].nlargest(10)
 

@@ -7,10 +7,11 @@ app.layout = layout
 server = app.server
 
 if __name__ == '__main__':
-    if IS_PROD:
-        ip = LOCAL_IP
-        port = PORT
-        app.run_server(debug=False, host=ip, port=port)
-    else:
-        app.run_server(debug=True)
+    app.run_server(debug=True)
+    #if IS_PROD:
+    #    ip = LOCAL_IP
+    #    port = PORT
+    #    app.run_server(debug=False, host=ip, port=port)
+    #else:
+    #    app.run_server(debug=True)
 

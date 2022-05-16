@@ -35,7 +35,7 @@ from config import NAV_TITLE, NAV_SUBTITLE, IS_PROD
 
 PAGES = [
     #{'name': 'page-results', 'url': '/results', 'label': 'Résultats', 'container': results_layout, 'in_nav': True},
-    {'name': 'cshps-scatter', 'url': '/scatter', 'label': 'Topics and Clusters', 'container': cshps_topics_scatter_maindiv, 'in_nav': True},
+    {'name': 'cshps-scatter', 'url': '/', 'label': 'Topics and Clusters', 'container': cshps_topics_scatter_maindiv, 'in_nav': True},
     {'name': 'cshps-topics', 'url': '/topics', 'label': 'Topic Details', 'container': cshps_topic_details_maindiv, 'in_nav': True},
     {'name': 'cshps-clusters', 'url': '/clusters', 'label': 'Cluster Details', 'container': cshps_cluster_details_maindiv, 'in_nav': True},
     {'name': 'cshps-coocs', 'url': '/coocs', 'label': 'Cooccurrences', 'container': cshps_coocs_maindiv, 'in_nav': True},

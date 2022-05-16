@@ -85,9 +85,13 @@ cshps_topics_scatter_maindiv = dbc.Card([
         dbc.Col([
             # Explanatory text
             dcc.Markdown(
-                'Each point on the figure represents an article. Colors represent each of the 4 clusters.' +
-                '\n\n' +
-                'Use scroll to zoom in and out, and left clic to rotate. Specific clusters can be hidden by clicking their name in the legend.',
+                'This figure provides an interactive view of the topic modeling and clustering results.' +
+                'Articles are represented in the 3d or 2d space based on their topic profiles using a T-SNE projection. '
+                'Each point represents an article and colors represent each of the 7 clusters. ' +
+                'Clicking a point will display the corresponding article\'s details on the left side of the screen. ' +
+                'Use scroll to zoom in and out, and left click to rotate.'
+                #'\n\n' +
+                '',
                 className='cshps-md'
             ),
         ], lg=6),

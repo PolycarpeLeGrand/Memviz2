@@ -91,10 +91,12 @@ cshps_topic_details_maindiv = dbc.Card([
         dbc.Col([
             # Explanatory text
             dcc.Markdown(
-                '' +
-                '\n\n' +
-                'Individual topics can be explored in more detail' +
-                'The topic modeling was done on the documents\' abstracts using SkLearn\'s LDA implementation. ' +
+                'The topic modeling was performed on the articles\' abstracts, using SKLearn\'s implementation of the LDA algorithm. ' +
+                'A value of 80 topics was settled on, which were then manually labelled based on the careful examination of their respective word profiles. ' +
+                'The table in the upper section gives an overview of each topic, and ' +
+                'individual topics can be looked at in more details using the drop-down menu in the lower section.' +
+                #'\n\n' +
+                #'The topic modeling was done on the documents\' abstracts using SkLearn\'s LDA implementation. ' +
                 '',
                 className='cshps-md'
             ),

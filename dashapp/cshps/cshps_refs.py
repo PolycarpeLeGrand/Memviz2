@@ -31,6 +31,28 @@ cshps_cooc_refs_maindiv = dbc.Card([
 
     dbc.Row([
         dbc.Col([
+            # Explanatory text
+            dcc.Markdown(
+                'Sample excerpts can be viewed to help with understanding the contexts in which different words cooccur. ' +
+                'These excerpts were selected randomly from the set of every instance the two words were found cooccurring across the corpus. ' +
+                'For each excerpt, the article\'s metadata, top topics, cluster, and full abstract are also displayed to provide aditional context. ' +
+                'To help navigate the data, we suggest using your browser search function (typically ctrl-f) on one of the selected words.' +
+                # '' +
+                # '\n\n' +
+                '',
+                className='cshps-md'
+            ),
+        ], lg=6),
+    ]),
+
+    dbc.Row([
+        dbc.Col([
+            html.Hr(className='cshps-hr-full'),
+        ]),
+    ]),
+
+    dbc.Row([
+        dbc.Col([
             dbc.Label('Select first term: '),
             make_cooc_refs_select('cooc-refs-select-0', 'mechanism'),
         ], lg=2),

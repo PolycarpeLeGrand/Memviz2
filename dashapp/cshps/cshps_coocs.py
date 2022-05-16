@@ -18,9 +18,12 @@ cshps_coocs_maindiv = dbc.Card([
         dbc.Col([
             # Explanatory text
             dcc.Markdown(
-                'Cooccurrences. Explanation text' +
-                '\n\n' +
-                'Text',
+                'Cooccurrence data was computed across the full-text content of every article (after lemmatization and word filtering), using and +/- 5 window. ' +
+                'Selecting a word will display its 100 most frequent cooccurring term. ' +
+                'The first column presents the results across the whole corpus, and the others each show the results for a specific clusters. ' +
+                #'' +
+                #'\n\n' +
+                '',
                 className='cshps-md'
             ),
         ], lg=6),

@@ -87,9 +87,12 @@ cshps_cluster_details_maindiv = dbc.Card([
         dbc.Col([
             # Explanatory text
             dcc.Markdown(
-                'Cluster details. Overview on top, or select one below' +
-                '\n\n' +
-                'blablalba',
+                'To split the corpus into disciplinary, ' +
+                'articles were grouped based on the similarity of their topic profiles using the K-Means algorithm (once again using SKLearn\'s implementation). ' +
+                'The table in the upper section gives an overview of each cluster, and ' +
+                'individual clusters can be looked at in more details using the drop-down menu in the lower section. ' +
+                #'\n\n' +
+                '',
                 className='cshps-md'
             ),
         ], lg=6),

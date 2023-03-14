@@ -22,10 +22,11 @@ PORT = 33
 # BASE_STORAGE_PATH = Path(environ.get('LOCAL_STORAGE_PATH'))
 BASE_STORAGE_PATH = PROJECT_PATH / 'data'
 DATA_PATH = Path('C:/Users/Sanchez/Desktop/m4data/memviz')
-# DATA_PATH = BASE_STORAGE_PATH
+#DATA_PATH = BASE_STORAGE_PATH
 DF_PATH = DATA_PATH / 'dataframes'
 P_PATH = DATA_PATH / 'pickles'
 STATIC_PATH = DATA_PATH / 'static'
+IS_PROD = True
 
 # Pickled Dataframes to be loaded in the DfManager on app init
 # Keys will be added to the DfManager object as variables <DfManager>.<key>
@@ -71,6 +72,13 @@ for p in walk(BASE_STORAGE_PATH / 'markdowns'):
 #   CACHE_REDIS_PORT: redis server port, default is 6379
 #   CACHE_REDIS_PASSWORD: redis server password
 USE_CACHE = True
+
+CACHE_CONFIG = {
+            'CACHE_TYPE': 'SimpleCache',
+            'CACHE_DEFAULT_TIMEOUT': 0,
+        }
+
+"""
 if USE_CACHE:
     if IS_PROD:
         CACHE_CONFIG = {
@@ -85,4 +93,4 @@ if USE_CACHE:
         }
 else:
     CACHE_CONFIG = None
-
+"""

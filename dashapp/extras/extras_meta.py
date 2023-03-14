@@ -6,6 +6,14 @@ import plotly.express as px
 from dashapp import DM, cache
 
 
+meta_stats_div = html.Div([
+    html.P(f'Top 10: {DM.METADATA_CORPUSFRAME["source"].value_counts().nlargest(10).sum()*100/len(DM.METADATA_CORPUSFRAME):.2f}%'),
+    html.P(f'Top 20: {DM.METADATA_CORPUSFRAME["source"].value_counts().nlargest(20).sum()*100/len(DM.METADATA_CORPUSFRAME):.2f}%'),
+    html.P(f'Top 25: {DM.METADATA_CORPUSFRAME["source"].value_counts().nlargest(25).sum()*100/len(DM.METADATA_CORPUSFRAME):.2f}%'),
+    html.P(f'Top 29: {DM.METADATA_CORPUSFRAME["source"].value_counts().nlargest(29).sum()*100/len(DM.METADATA_CORPUSFRAME):.2f}%'),
+    html.P(f'Top 100: {DM.METADATA_CORPUSFRAME["source"].value_counts().nlargest(100).sum()*100/len(DM.METADATA_CORPUSFRAME):.2f}%'),
+])
+
 extras_meta_maindiv = html.Div([
 
     dbc.Row([
@@ -41,6 +49,22 @@ extras_meta_maindiv = html.Div([
             )
         ]),
     ]),
+
+    dbc.Row([
+        dbc.Col([
+            html.Hr(style={'margin': '2rem'}),
+        ])
+    ]),
+
+    dbc.Row([
+        dbc.Col([
+           meta_stats_div
+        ]),
+        dbc.Col([
+
+        ]),
+    ]),
+
 
     dbc.Row([
         dbc.Col([

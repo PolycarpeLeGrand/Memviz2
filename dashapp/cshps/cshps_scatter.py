@@ -195,7 +195,7 @@ def update_doc_details(click_data):
         html.Tr([html.Td(DM.TOPIC_NAMES_MAP[t], className='cshps-small-table-data'), html.Td(f'{w:.4f}', className='cshps-small-table-data')]) for t, w in top_topics.iteritems()
     ])]
 
-    details = f'**Title:** {title}  \n**Journal:** {source}  \n**Cluster:** {cluster}'
+    details = f'**Title:** {title}  \n**Journal:** {source}  \n**Cluster:** {CLUSTER_MAP[cluster]}'
 
     return html.Div([
         html.H6(head),

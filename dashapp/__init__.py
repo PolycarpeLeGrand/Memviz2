@@ -5,7 +5,6 @@ import plotly.graph_objects as go
 
 from config import PROJECT_TITLE, IS_PROD, USE_CACHE, CACHE_CONFIG, DATA
 from data.datamanager import DataManager
-import dash_auth
 
 
 app = dash.Dash(
@@ -17,11 +16,6 @@ app = dash.Dash(
     ],
 )
 
-PWS = {'cshps': '2022'}
-auth = dash_auth.BasicAuth(
-    app,
-    PWS
-)
 
 if USE_CACHE:
     cache = Cache(
